@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from '../Navigation/Navigation.module.css';
 
-const Navigation = () => {
+export const Navigation = (): JSX.Element => {
   return (
     <nav>
       <NavLink to="/contacts" className={styles.link}>
@@ -12,4 +12,4 @@ const Navigation = () => {
   );
 };
 
-export default Navigation;
+

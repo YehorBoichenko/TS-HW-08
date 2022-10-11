@@ -1,10 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 import styles from '../UserMenu/userMenu.module.css';
-import authorizationSelectors from 'redux/authorization/authorization-selectors';
-import authorizationOperations from 'redux/authorization/authorization-operations';
+import authorizationSelectors from '../../redux/authorization/authorization-selectors';
+import authorizationOperations from '../../redux/authorization/authorization-operations';
+import React from 'react';
+import { AppDispatch } from '../../redux/store';
 
-export default function UserMenu() {
-  const dispatch = useDispatch();
+export const UserMenu = (): JSX.Element => {
+ const dispatch = useDispatch<AppDispatch>();
   const name = useSelector(authorizationSelectors.getUserName);
   return (
     <div className={styles.container}>
@@ -17,4 +19,4 @@ export default function UserMenu() {
       </button>
     </div>
   );
-}
+};

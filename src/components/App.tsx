@@ -2,28 +2,30 @@ import { Suspense, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import { Container } from './Container/Container';
-import PublicRoute from '../components/Routes/PublicRoute';
-import PrivateRoute from '../components/Routes/PrivateRoute';
+import {PublicRoute} from './Routes/PublicRoute';
+import {PrivateRoute} from './Routes/PrivateRoute';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import authorizationOperations from 'redux/authorization/authorization-operations';
-import RegisterView from 'views/Registration/Registration';
-import LoginView from 'views/Login/Login';
-import ContactsViewPage from 'views/Contactspage/ContactsPage';
-import AppBar from './AppBar/AppBar';
-import LoaderSpinner from './loader/Loader';
+import authorizationOperations from '../redux/authorization/authorization-operations';
+import RegisterView from '../views/Registration/Registration';
+import LoginView from '../views/Login/Login';
+import {ContactsViewPage} from '../views/Contactspage/ContactsPage';
+import {AppBar} from './AppBar/AppBar';
+import {LoaderSpinner} from './loader/Loader';
+import React from 'react';
+import { AppDispatch } from '../redux/store';
 
-export default function App() {
-  const dispatch = useDispatch();
+export const App =():JSX.Element =>{
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(authorizationOperations.fetchCurrentUser());
+    dispatch(authorizationOperations.getCurrentUser());
   }, [dispatch]);
   return (
     <Container>
       <AppBar />
-      <Suspense fallback={LoaderSpinner}>
+      <Suspense fallback={<LoaderSpinner />}>
         <Routes>
           <Route
             path="/register"
@@ -44,7 +46,7 @@ export default function App() {
           <Route
             path="/contacts"
             element={
-              <PrivateRoute redirectTo="/login">
+              <PrivateRoute >
                 <ContactsViewPage />
               </PrivateRoute>
             }

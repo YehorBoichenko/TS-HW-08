@@ -1,15 +1,18 @@
+import React from 'react';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import authorizationOperations from 'redux/authorization/authorization-operations';
+import authorizationOperations from '../../redux/authorization/authorization-operations';
+import { AppDispatch } from '../../redux/store';
 import styles from '../Registration/Registration.module.css';
 
 export default function RegisterView() {
-  const dispatch = useDispatch();
+ const dispatch = useDispatch<AppDispatch>();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleChange = ({ target: { name, value } }) => {
+  const handleChange = (event: React.FormEvent<HTMLInputElement>): void => {
+    const { name, value } = event.currentTarget;
     switch (name) {
       case 'name':
         return setName(value);
@@ -22,7 +25,7 @@ export default function RegisterView() {
     }
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
     dispatch(authorizationOperations.register({ name, email, password }));
     setName('');

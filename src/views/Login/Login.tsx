@@ -1,14 +1,18 @@
+import React from 'react';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import authorizationOperations from 'redux/authorization/authorization-operations';
+import { IDataToPost } from '../../interfaces';
+import authorizationOperations from '../../redux/authorization/authorization-operations';
+import { AppDispatch } from '../../redux/store';
 import styles from '../Login/Login.module.css';
 
 export default function LoginView() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handlerChanger = ({ target: { name, value } }) => {
+  const handlerChanger = (event: React.FormEvent<HTMLInputElement>): void => {
+    const { name, value } = event.currentTarget;
     switch (name) {
       case 'email':
         return setEmail(value);
@@ -18,9 +22,16 @@ export default function LoginView() {
         return;
     }
   };
-  const handleSubmit = event => {
+  const handleSubmit = (event: React.SyntheticEvent) => {
     event.preventDefault();
-    dispatch(authorizationOperations.logIn({ email, password }));
+        const formData: IDataToPost = { email, password };
+    const target = event.target as typeof event.target & {
+      email: { value: string };
+      password: { value: string };
+    };
+    formData.email = target.email.value;
+    formData.password = target.password.value;
+     dispatch(authorizationOperations.logIn({ email, password }));
     setEmail('');
     setPassword('');
   };
